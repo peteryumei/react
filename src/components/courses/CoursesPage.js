@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 class CoursesPage extends React.Component {
   state = {
     course: {
-      title: "",
+      title: "Test",
     },
   };
 
