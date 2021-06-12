@@ -1,4 +1,4 @@
-import * as types from "../actions//actionTypes";
+import * as types from "../actions/actionTypes";
 
 export default function courseReducer(state = [], action) {
   switch (action.type) {
@@ -6,7 +6,7 @@ export default function courseReducer(state = [], action) {
       //state.push(action.course); // bad: mutate state
       //debugger
       return [...state, { ...action.course }];
-    case types.LOAD_COURSE_SUCCESS:
+    case types.LOAD_COURSES_SUCCESS:
       return action.courses;
     default:
       return state;

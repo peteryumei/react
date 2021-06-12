@@ -8,7 +8,7 @@ export function createCourse(course) {
 export function loadCourseSuccess(courses)
 {
   //debugger
-  return {type: types.LOAD_COURSE_SUCCESS, courses: courses};
+  return {type: types.LOAD_COURSES_SUCCESS, courses: courses};
 }
 
 export function loadCourses() {
