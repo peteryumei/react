@@ -4,7 +4,10 @@ export default function courseReducer(state = [], action) {
   switch (action.type) {
     case types.CREATE_COURSE:
       //state.push(action.course); // bad: mutate state
+      //debugger
       return [...state, { ...action.course }];
+    case types.LOAD_COURSE_SUCCESS:
+      return action.courses;
     default:
       return state;
   }
