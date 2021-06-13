@@ -38,4 +38,8 @@ build
 # json-server db
 db.json
 
+# Visual Studio folder
 .vs
+
+# Visual Studio Code folder
+.vscode

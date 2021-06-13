@@ -1,48 +1,81 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { loadCourses } from "../../redux/actions/courseActions";
+import { loadCourses, saveCourse } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
+import CourseForm from "./CourseForm";
+import { newCourse } from "../../../tools/mockData";
 
-function ManageCoursesPage({ courses, authors, loadCourses, loadAuthors })  {
-    useEffect(() => {
-        if (courses.length === 0) {
-            loadCourses().catch(error => {
-                alert("Loading courses failed" + error);
-            });
-        }
+function ManageCoursesPage({
+  courses,
+  authors,
+  loadCourses,
+  loadAuthors,
+  saveCourse,
+  ...props
+}) {
+  const [course, setCourse] = useState({ ...props.courses });
+  const [errors, setErrors] = useState({});
 
-        if (authors.length === 0) {
-            loadAuthors().catch(error => {
-                alert("Loading authors failed" + error);
-            }); 
-        }
-    }, []);
+  useEffect(() => {
+    if (courses.length === 0) {
+      loadCourses().catch((error) => {
+        alert("Loading courses failed" + error);
+      });
+    }
 
-    return (
-     <>
-        <h2>Manage Courses</h2>
-      </>
-    );
+    if (authors.length === 0) {
+      loadAuthors().catch((error) => {
+        alert("Loading authors failed" + error);
+      });
+    }
+  }, []);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      [name]: name === "authorId" ? parseInt(value, 10) : value,
+    }));
+  }
+
+  function handleSave(event) {
+    event.preventDefault();
+    saveCourse(course);
+  }
+
+  return (
+    <CourseForm
+      course={course}
+      errors={errors}
+      authors={authors}
+      onChange={handleChange}
+      onSave={handleSave}
+    />
+  );
 }
 
 ManageCoursesPage.propTypes = {
+  course: PropTypes.object.isRequired,
   authors: PropTypes.array.isRequired,
   courses: PropTypes.array.isRequired,
   loadCourses: PropTypes.func.isRequired,
-  loadAuthors: PropTypes.func.isRequired
+  loadAuthors: PropTypes.func.isRequired,
+  saveCourse: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
+    course: newCourse,
     courses: state.courses,
-    authors: state.authors
+    authors: state.authors,
   };
 }
 
 const mapDispatchToProps = {
-      loadCourses: loadCourses,
-      loadAuthors: loadAuthors 
+  loadCourses: loadCourses,
+  loadAuthors: loadAuthors,
+  saveCourse: saveCourse,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursesPage);
